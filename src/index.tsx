@@ -1,19 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { Provider } from "react-redux";
+import { store } from "./store"; // Import the store here
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "./store";
+import { lightTheme, darkTheme } from "./theme";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const Root = () => {
+  return (
+    <Provider store={store}>
+      <AppWithTheme />
+    </Provider>
+  );
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const AppWithTheme = () => {
+  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
+  return (
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")!).render(<Root />);

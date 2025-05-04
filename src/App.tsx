@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./layouts/Layout";
+import { LogInForm, Dashboard, User, Location } from "./pages";
+import LocationDetail from "./pages/Location/LocationDetail";
+import UserDetail from "./pages/User/UserDetail";
 
-function App() {
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<LogInForm />} />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user"
+            element={
+              <ProtectedRoute>
+                <User />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/:id"
+            element={
+              <ProtectedRoute>
+                <UserDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/location"
+            element={
+              <ProtectedRoute>
+                <Location />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/location/:id"
+            element={
+              <ProtectedRoute>
+                <LocationDetail />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Layout>
+    </Router>
   );
-}
+};
 
 export default App;
